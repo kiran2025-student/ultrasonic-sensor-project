@@ -1,0 +1,123 @@
+project_1 ultrasonic sensor project
+led_distance_wise_lighting
+**material used**
+1.Arduino UNO
+2.Buzzer
+3.Ultrasonic sensore
+4.4*LED
+5.15*Jumper wires
+
+**electronic connection**
+ultrasonic sensor connection:
+VCC -> 5VPIN
+TRIG -> DIG 9PIN ARDUINO
+ECHO -> DIG 10PIN ARDUINO
+GND -> GROUND PIN OF ARDUINO
+
+LED Connections:
+LED 1 -> ANODE DIG 2 and CATHODE GROUND 
+LED 2 -> ANODE DIG 3 AND CATHODE GROUND 
+LED 3 -> ANODE DIG 4 AND CATHODE GROUND
+LED 4 -> ANODE DIG 5 AND CATHODE GROUND
+.Take one rails of arduinon as a common ground use it all led ground pin
+.connect all the anode via 220ohm resistor
+
+Buzzer:
+Positiuve pin -> 6 DIG pin
+Negetive pin -> GND(ground rail of arduino)
+
+Arduino code:
+```arduino
+// Ultrasonic Sensor Distance-based LED Lighting
+// Project: LED control based on distance measurement
+#define trigPin 9
+#define echoPin 10
+
+#define led1 2
+#define led2 3
+#define led3 4
+#define led4 5
+#define buzzer 6
+
+long duration;
+float distance;
+
+void setup() {
+
+  Serial.begin(9600);
+
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(led3, OUTPUT);
+  pinMode(led4, OUTPUT);
+  pinMode(buzzer, OUTPUT);
+}
+
+void loop() {
+
+  // Send ultrasonic pulse
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  // Read echo with timeout
+  duration = pulseIn(echoPin, HIGH, 30000);
+
+  // If no echo
+  if(duration == 0) {
+    Serial.println("No echo detected");
+    return;
+  }
+
+  // Calculate distance
+  distance = duration * 0.0343 / 2;
+
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+
+  // Turn OFF everything first
+  digitalWrite(led1, LOW);
+  digitalWrite(led2, LOW);
+  digitalWrite(led3, LOW);
+  digitalWrite(led4, LOW);
+  digitalWrite(buzzer, LOW);
+
+  // LED + Buzzer Logic
+  if(distance >= 40) {
+    digitalWrite(led1, HIGH);
+  }
+  else if(distance >= 25) {
+    digitalWrite(led2, HIGH);
+  }
+  else if(distance >= 15) {
+    digitalWrite(led3, HIGH);
+  }
+  else if(distance >= 8) {
+    digitalWrite(led4, HIGH);
+  }
+  else {
+    digitalWrite(led4, HIGH);
+    digitalWrite(buzzer, HIGH);
+  }
+
+  delay(300);
+}
+
+
+contact:javvadiushakiran8125@gmail.com
+you can contact this mail id for any changes and for doubts realated to this project.
+
+
+
+
+
+
+
+
